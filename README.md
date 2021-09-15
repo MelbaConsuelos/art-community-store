@@ -8,6 +8,6 @@ Clone the repository
 
 Install dependencies with `npm install`
 
-Run the project with `npm run start`
+Run the project with `npm run dev`
 
 Please commit your changes using `git cz` to use commitizen for good practices
