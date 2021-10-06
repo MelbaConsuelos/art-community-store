@@ -15,8 +15,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // connecting to mongoDB and then running server on port 4000
-const dbURI = config.get("dbURI");
-const port = process.env.PORT || 4000;
+const dbURI = config.get('dbURI');
+const port = process.env.PORT || 3000;
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
