@@ -1,3 +1,3 @@
 {
-  "dbURI": "YOUR_DATABASE_URI"
+  "dbURI": "mongodb+srv://blog_user:art2021@art-community-store.4szgw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 }
