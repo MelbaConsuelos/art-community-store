@@ -1,0 +1,9 @@
+.products {
+    display: flex;
+    flex-direction: column;
+    &-card {
+      display: flex;
+      margin-left: 12px;
+      margin-top: 12px;
+    }
+  }

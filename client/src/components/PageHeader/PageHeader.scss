@@ -1,0 +1,47 @@
+.headerMenu {
+    width: 320px;
+    margin: 0px;
+    &-tab{
+      margin: 0px;
+    }
+  }
+  
+  #ul {
+    margin: 0px;
+  }
+
+  .logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  
+  .headerButtons {
+    display: flex;
+    flex-direction: row;
+    float: right;
+    &-shoppingCart {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+    &-login {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+    &-signup {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+  }
+  
+  .shopCart {
+    align-self: flex-end;
+    float: right;
+    // margin-left: 720px;
+    &-icon {
+      size: 48px;
+    }
+  }

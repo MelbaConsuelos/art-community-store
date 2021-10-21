@@ -1,0 +1,40 @@
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+[data-theme="dark"] .site-layout .site-layout-background {
+    background: #141414;
+}
+
+.featured {
+  display: flex;
+  flex-direction: column;
+  &-title {
+    align-self: center;
+    padding-bottom: 32px;
+  }
+  &-subtitle {
+    align-self: center;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  &-carousel {
+    align-items: center;
+    margin-left: 420px;
+    margin-right: 72px;
+    margin-top: 32px;
+    margin-bottom: 64px;
+    width: 50%;
+    height: 150%;
+  }
+  &-stores {
+    display: flex;
+    margin-left: 12px;
+    margin-top: 12px;
+
+    &-card {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+  }
+}

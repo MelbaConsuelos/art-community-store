@@ -1,0 +1,16 @@
+.storeHeader {
+    &-cover {
+        display: flex;
+    }
+    &-img {
+    
+    }
+    &-info {
+        display: flex;
+        flex-direction: row;
+        margin: 24px;
+        &-text {
+            justify-content: flex-start;
+        }
+    }
+}
