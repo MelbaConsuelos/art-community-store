@@ -1,15 +1,14 @@
-
-import { Component } from 'react';
+import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import './Homepage.css'
+import './Homepage.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 
-class Homepage extends Component {
-    render(){
-      return ( 
-        <Layout>
+class Homepage extends React.Component {
+  render() {
+    return (
+      <Layout>
         <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
@@ -30,7 +29,7 @@ class Homepage extends Component {
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
       </Layout>
-      );
-    }
+    );
+  }
 }
-  export default Homepage;
+export default Homepage;
