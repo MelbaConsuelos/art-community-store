@@ -22,3 +22,11 @@ module.exports.delete_store = (req,res) => {
         res.json({success: true});
     });
 }
+
+module.exports.get_store = (req,res) => {
+    Store.findById({_id: req.params.id}, req.body).then(function(store){
+        Store.findOne({_id: req.params.id}).then(function(store){
+            res.json(store);
+        });
+    });
+}

@@ -22,3 +22,11 @@ module.exports.delete_vendor = (req,res) => {
         res.json({success: true});
     });
 }
+
+module.exports.get_vendor = (req,res) => {
+    Vendor.findById({_id: req.params.id}, req.body).then(function(vendor){
+        Vendor.findOne({_id: req.params.id}).then(function(vendor){
+            res.json(vendor);
+        });
+    });
+}
