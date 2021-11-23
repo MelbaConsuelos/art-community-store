@@ -1,12 +1,9 @@
-import React, { Component } from 'react';
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 import 'antd/dist/antd.css';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import {
-  Layout, Card, Button, Avatar, Typography,
-} from 'antd';
+import { Card, Avatar } from 'antd';
 
-const { Title, Text } = Typography;
-const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 
 class ShoppingCartItem extends React.Component {
@@ -17,9 +14,10 @@ class ShoppingCartItem extends React.Component {
       >
         <Meta
           avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-          title="$12.00"
-          description="Tres stickers de gatito"
+          title={`$${this.props.item.price}`}
+          description={this.props.item.name}
         />
+        {this.props.item.quantity}
       </Card>
     );
   }

@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+/* eslint-disable no-alert */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+import React from 'react';
 import 'antd/dist/antd.css';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import {
-  Layout, Breadcrumb, Button, Typography, Form, Input, Checkbox,
+  Layout,
 } from 'antd';
+import { connect } from 'react-redux';
+import { getItems } from '../../actions/itemActions';
+import { addToCart } from '../../actions/cartActions';
 import PageHeader from '../PageHeader/PageHeader';
 import StoreHeader from './StoreHeader';
 import ProductCard from './ProductCard';
 
-const { Header, Content, Footer } = Layout;
-const { Title } = Typography;
+const { Content, Footer } = Layout;
 
 class Store extends React.Component {
+  componentDidMount() {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.getItems();
+  }
+
   render() {
+    const onAddToCart = async (id, productId) => {
+      await this.props.addToCart(id, productId, 1);
+      alert('Item added to Cart');
+    };
+
+    // eslint-disable-next-line react/destructuring-assignment
+    const { items } = this.props.item;
     return (
       <Layout>
         <PageHeader />
@@ -20,21 +36,11 @@ class Store extends React.Component {
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <StoreHeader />
             <div className="featured-stores">
-              <div className="featured-stores-card">
-                <ProductCard />
-              </div>
-              <div className="featured-stores-card">
-                <ProductCard />
-              </div>
-              <div className="featured-stores-card">
-                <ProductCard />
-              </div>
-              <div className="featured-stores-card">
-                <ProductCard />
-              </div>
-              <div className="featured-stores-card">
-                <ProductCard />
-              </div>
+              {items && items.map((item) => (
+                <div className="featured-stores-card">
+                  <ProductCard item={item} onAddToCart={onAddToCart} />
+                </div>
+              ))}
             </div>
           </div>
         </Content>
@@ -44,4 +50,8 @@ class Store extends React.Component {
   }
 }
 
-export default Store;
+const mapStateToProps = (state) => ({
+  item: state.item,
+});
+
+export default connect(mapStateToProps, { getItems, addToCart })(Store);

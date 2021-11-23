@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import {
-  Layout, Image, Avatar, Typography, Input, Checkbox,
+  Image, Avatar, Typography,
 } from 'antd';
-import PageHeader from '../PageHeader/PageHeader';
 import Cover from '../../assets/banner.jpg';
 import Cary from '../../assets/cary2.PNG';
 import './StoreHeader.scss';
 
-const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
 class StoreHeader extends React.Component {
