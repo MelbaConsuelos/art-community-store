@@ -1,0 +1,22 @@
+.item {
+    &-card {
+        display: flex;
+        flex-direction: row;
+    }
+    &-product {
+        align-self: flex-start;
+    }
+    &-quantity {
+        display: flex;
+        flex-direction: row;
+        &-button {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        &-num {
+            margin-top: 4px;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+    }
+}

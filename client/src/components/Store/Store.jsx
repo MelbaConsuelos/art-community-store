@@ -4,7 +4,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import {
-  Layout,
+  Layout, List,
 } from 'antd';
 import { connect } from 'react-redux';
 import { getItems } from '../../actions/itemActions';
@@ -36,11 +36,23 @@ class Store extends React.Component {
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <StoreHeader />
             <div className="featured-stores">
-              {items && items.map((item) => (
-                <div className="featured-stores-card">
-                  <ProductCard item={item} onAddToCart={onAddToCart} />
-                </div>
-              ))}
+              <List
+                grid={{
+                  gutter: 8,
+                  xs: 1,
+                  sm: 2,
+                  md: 2,
+                  lg: 2,
+                  xl: 3,
+                  xxl: 4,
+                }}
+                dataSource={items}
+                renderItem={(item) => (
+                  <List.Item>
+                    <ProductCard className="products-card" item={item} onAddToCart={onAddToCart} />
+                  </List.Item>
+                )}
+              />
             </div>
           </div>
         </Content>

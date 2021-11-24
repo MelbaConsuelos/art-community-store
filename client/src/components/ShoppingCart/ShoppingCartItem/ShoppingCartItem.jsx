@@ -1,8 +1,18 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
-import { Card, Avatar } from 'antd';
+import {
+  Card, Avatar, Image, Button,
+} from 'antd';
+
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { deleteFromCart } from '../../../actions/cartActions';
+
+import './ShoppingCartItem.scss';
 
 const { Meta } = Card;
 
@@ -10,16 +20,41 @@ class ShoppingCartItem extends React.Component {
   render() {
     return (
       <Card
-        style={{ width: 300 }}
+        style={{ width: 480 }}
+        bodyStyle={{
+          display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: 480,
+        }}
+        className="item-card"
       >
-        <Meta
-          avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-          title={`$${this.props.item.price}`}
-          description={this.props.item.name}
-        />
-        {this.props.item.quantity}
+        <div className="item-product">
+          <Meta
+            avatar={<Avatar shape="square" size="large" src={<Image src={this.props.item.productImage} style={{ size: 64 }} />} />}
+            title={this.props.item.name}
+            description={`$${this.props.item.price}`}
+          />
+        </div>
+        <div className="item-quantity">
+          {this.props.item.quantity === 1 ? (
+            <Button
+              className="item-quantity-button"
+              shape="circle"
+              icon={<DeleteOutlined />}
+              onClick={async () => {
+                await this.props.deleteFromCart(this.props.user, this.props.item.productId);
+              }}
+            />
+          ) : (
+            <Button className="item-quantity-button" shape="circle" icon={<MinusOutlined />} />
+          )}
+
+          <div className="item-quantity-num">
+            {this.props.item.quantity}
+          </div>
+          <Button className="item-quantity-button" shape="circle" icon={<PlusOutlined />} />
+        </div>
       </Card>
     );
   }
 }
-export default ShoppingCartItem;
+const mapStateToProps = (state) => ({});
+export default connect(mapStateToProps, { deleteFromCart })(ShoppingCartItem);
