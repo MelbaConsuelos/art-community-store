@@ -1,0 +1,52 @@
+.checkout {
+    &-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        text-align: start;
+    }
+    &-cart {
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+    }
+    &-stripe {
+        display: flex;
+        align-items: center;
+    }
+    &-bill {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 12px;
+        padding-left: 8px;
+        padding-right: 8px;
+
+        &-subtotal {
+            display: flex;
+            flex-direction: row;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            width: max-content;
+        }
+
+        &-shipping {
+            display: flex;
+            flex-direction: row;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        &-total {
+            display: flex;
+            flex-direction: row;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        &-text {
+            margin-top: 20px;
+            margin-right: 360px;
+        }
+    }
+}

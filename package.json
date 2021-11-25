@@ -24,12 +24,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.6.0",
+    "@stripe/stripe-js": "^1.21.1",
     "bcrypt": "^5.0.0",
     "concurrently": "^5.3.0",
     "config": "^3.3.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.11",
+    "stripe": "^8.191.0",
     "validator": "^13.5.2"
   },
   "devDependencies": {

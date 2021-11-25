@@ -40,7 +40,14 @@
   .shopCart {
     align-self: flex-end;
     float: right;
-    // margin-left: 720px;
+    &-footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-top: 12px;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
     &-icon {
       size: 48px;
     }

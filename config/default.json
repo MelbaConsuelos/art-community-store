@@ -1,3 +1,4 @@
 {
-  "dbURI": "mongodb+srv://blog_user:art2021@art-community-store.4szgw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  "dbURI": "mongodb+srv://blog_user:art2021@art-community-store.4szgw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "StripeAPIKey": "sk_test_IKYCHOAmUhC7IPTdaoVtO58D"
 }

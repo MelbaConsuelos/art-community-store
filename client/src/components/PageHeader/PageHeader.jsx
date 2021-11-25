@@ -5,12 +5,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { Layout, Modal, Button } from 'antd';
+import {
+  Layout, Modal, Button, Typography,
+} from 'antd';
 import { getCart } from '../../actions/cartActions';
 import './PageHeader.scss';
 import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
 
 const { Header } = Layout;
+const { Title } = Typography;
 
 class PageHeader extends React.Component {
   constructor(props) {
@@ -55,9 +58,16 @@ class PageHeader extends React.Component {
           </div>
         </div>
         <Modal title="Carrito" visible={this.state.isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Proceder al Pago" cancelText="Cerrar">
-          {this.props.cart && (this.props.cart.items.map((item) => (
+          {this.props.cart.cart && (this.props.cart.cart.items.map((item) => (
             <ShoppingCartItem item={item} user="12" />
           )))}
+          <div className="shopCart-footer">
+            <Title level={4}>Total:</Title>
+            <Title level={5}>
+              $
+              { this.props.cart.cart && this.props.cart.cart.bill}
+            </Title>
+          </div>
           {/* <div className="shopCart-noItems">
               <p> Parece que no has agregado nada aún :(</p>
               <Button
@@ -73,7 +83,7 @@ class PageHeader extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  items: state.cart,
+  cart: state.cart,
 });
 
 export default connect(mapStateToProps, { getCart })(PageHeader);

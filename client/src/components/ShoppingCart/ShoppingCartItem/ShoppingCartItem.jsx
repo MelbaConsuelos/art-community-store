@@ -10,7 +10,7 @@ import {
 } from 'antd';
 
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deleteFromCart } from '../../../actions/cartActions';
+import { deleteFromCart, updateCart } from '../../../actions/cartActions';
 
 import './ShoppingCartItem.scss';
 
@@ -19,6 +19,7 @@ const { Meta } = Card;
 class ShoppingCartItem extends React.Component {
   render() {
     return (
+
       <Card
         style={{ width: 480 }}
         bodyStyle={{
@@ -44,17 +45,35 @@ class ShoppingCartItem extends React.Component {
               }}
             />
           ) : (
-            <Button className="item-quantity-button" shape="circle" icon={<MinusOutlined />} />
+            <Button
+              className="item-quantity-button"
+              shape="circle"
+              icon={<MinusOutlined />}
+              onClick={async () => {
+                // eslint-disable-next-line max-len
+                await this.props.updateCart(this.props.user, this.props.item.productId, this.props.item.quantity - 1);
+              }}
+            />
           )}
 
           <div className="item-quantity-num">
             {this.props.item.quantity}
           </div>
-          <Button className="item-quantity-button" shape="circle" icon={<PlusOutlined />} />
+          <Button
+            className="item-quantity-button"
+            shape="circle"
+            icon={<PlusOutlined />}
+            onClick={async () => {
+              // eslint-disable-next-line max-len
+              await this.props.updateCart(this.props.user, this.props.item.productId, this.props.item.quantity + 1);
+            }}
+          />
         </div>
       </Card>
     );
   }
 }
-const mapStateToProps = (state) => ({});
-export default connect(mapStateToProps, { deleteFromCart })(ShoppingCartItem);
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+export default connect(mapStateToProps, { deleteFromCart, updateCart })(ShoppingCartItem);
