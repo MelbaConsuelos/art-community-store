@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
@@ -13,6 +15,8 @@ import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem'
 import AddressForm from './AddressForm/AddressForm';
 import StripeCheckout from './StrpCheckout';
 import { getCart, deleteFromCart, updateCart } from '../../actions/cartActions';
+import { getUser } from '../../actions/userActions';
+import { checkout } from '../../actions/orderActions';
 
 import './Checkout.scss';
 
@@ -25,18 +29,22 @@ class Checkout extends React.Component {
     super(props);
     this.state = {
       cart: getCart(),
+      user: getUser(),
     };
   }
 
   componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
     const cartItems = getCart();
-    this.setState({ cart: cartItems });
+    const currUser = getUser();
+    this.setState({ cart: cartItems, user: currUser });
   }
 
   render() {
     const { items } = this.state.cart.cart || [];
-    const { shipping } = 0;
+    // const { userId } = this.state.user._id || '';
+    // const localShipping = 0;
+    // const nationalShipping = 40;
     return (
       <Layout>
         <PageHeader />
@@ -113,33 +121,31 @@ class Checkout extends React.Component {
                     </Card>
                   )))}
                   <div className="checkout-bill">
-                    <div className="checkout-bill-subtotal">
+                    {/* <div className="checkout-bill-subtotal">
                       <Title className="checkout-bill-text" level={5}>Subtotal:</Title>
                       <Title level={5}>
                         $
-                        { this.state.cart.cart && this.state.cart.cart.bill}
+                        { this.state.cart.cart ? (this.state.cart.cart.bill) : ('calculando...')}
                       </Title>
-                    </div>
-                    <div className="checkout-bill-shipping">
-                      <Text className="checkout-bill-text" type="secondary">Costo de Envío:</Text>
-                      <Text type="secondary">{shipping}</Text>
-                    </div>
+                    </div> */}
                     <div className="checkout-bill-total">
                       <Title className="checkout-bill-text" level={4}>Total:</Title>
                       <Title level={4}>
                         $
-                        { this.state.cart.cart && this.state.cart.cart.bill + shipping}
+                        { this.state.cart.cart && this.state.cart.cart.bill}
                       </Title>
                     </div>
                   </div>
                 </div>
+
                 <div className="checkout-stripe">
                   <StripeCheckout
-                    user="12"
+                    user={this.state.user?._id && this.state.user._id}
                     amount={this.state.cart.cart && this.state.cart.cart.bill}
                     checkout={this.props.checkout}
                   />
                 </div>
+
               </div>
             </div>
           </div>
@@ -152,6 +158,9 @@ class Checkout extends React.Component {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  user: state.user,
 });
 
-export default connect(mapStateToProps, { deleteFromCart, updateCart, getCart })(Checkout);
+export default connect(mapStateToProps, {
+  deleteFromCart, updateCart, getCart, getUser, checkout,
+})(Checkout);

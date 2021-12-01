@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 const { isEmail } = require('validator');
 
 const UserSchema = new Schema({
-    userId: {
-        type: String,
-    },
     shipping_address: {
         street: String,
         city: String,

@@ -1,7 +1,6 @@
 import { GET_USER, ADD_USER, USER_LOADING } from '../actions/types';
 
 const initialState = {
-  user: {},
   loading: false,
 };
 
@@ -18,7 +17,7 @@ export default function (state = initialState, action) {
     case ADD_USER:
       return {
         ...state,
-        user: [action.payload, ...state.user],
+        ...action.payload,
       };
 
     case USER_LOADING:

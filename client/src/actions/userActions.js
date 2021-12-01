@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable max-len */
 /* eslint-disable no-use-before-define */
 import axios from 'axios';
 import { returnErrors } from './errorActions';
@@ -13,8 +15,19 @@ export const getUser = (id) => (dispatch) => {
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const addUser = () => (dispatch) => {
-  axios.post('/api/user')
+export const addUser = (shipping_address, client_name, client_lastname, client_email) => (dispatch) => {
+  // headers
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  // request body
+  const body = JSON.stringify({
+    shipping_address, client_name, client_lastname, client_email,
+  });
+  console.log(body);
+  axios.post('/api/user', body, config)
     .then((res) => dispatch({
       type: ADD_USER,
       payload: res.data,

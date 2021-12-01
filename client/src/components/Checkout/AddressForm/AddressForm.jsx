@@ -1,12 +1,16 @@
+/* eslint-disable no-alert */
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
 import {
   Button, Typography, Form, Input, Space, Select,
 } from 'antd';
+import { addUser, getUser } from '../../../actions/userActions';
 import './AddressForm.scss';
 
 const { Option } = Select;
@@ -44,11 +48,13 @@ const states = ['Aguascalientes',
   'Yucatán',
   'Zacatecas'];
 
-const AddressForm = () => {
+const AddressForm = (props) => {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('Received values of form: ', values);
+    const user = props.addUser(values.shipping_address, values.client_name, values.client_lastname, values.client_email);
+    alert('Información de envío guardada exitosamente');
   };
 
   useEffect(() => {
@@ -61,7 +67,7 @@ const AddressForm = () => {
         <Form.Item className="address-label" label="Nombre(s)">
           <Space>
             <Form.Item
-              name="nombre"
+              name="client_name"
               noStyle
               rules={[{ required: true, message: 'El nombre es requerido' }]}
             >
@@ -72,7 +78,7 @@ const AddressForm = () => {
         <Form.Item label="Apellido(s)">
           <Space>
             <Form.Item
-              name="apellido"
+              name="client_lastname"
               noStyle
               rules={[{ required: true, message: 'El apellido es requerido' }]}
             >
@@ -83,7 +89,7 @@ const AddressForm = () => {
         <Form.Item label="Correo">
           <Space>
             <Form.Item
-              name="email"
+              name="client_email"
               noStyle
               rules={[{ required: true, message: 'El correo es requerido' }]}
             >
@@ -94,7 +100,7 @@ const AddressForm = () => {
         <Form.Item label="Address">
           <Input.Group compact>
             <Form.Item
-              name={['address', 'estado']}
+              name={['shipping_address', 'state']}
               noStyle
               rules={[{ required: true, message: 'El estado es requerido' }]}
             >
@@ -105,28 +111,28 @@ const AddressForm = () => {
               </Select>
             </Form.Item>
             <Form.Item
-              name={['address', 'ciudad']}
+              name={['shipping_address', 'city']}
               noStyle
               rules={[{ required: true, message: 'La ciudad es requerida' }]}
             >
               <Input style={{ width: '50%' }} placeholder="Ciudad" />
             </Form.Item>
             <Form.Item
-              name={['address', 'calle']}
+              name={['shipping_address', 'street']}
               noStyle
               rules={[{ required: true, message: 'La calle es requerida' }]}
             >
               <Input style={{ width: '50%' }} placeholder="Calle" />
             </Form.Item>
             <Form.Item
-              name={['address', 'colonia']}
+              name={['shipping_address', 'neighborhood']}
               noStyle
               rules={[{ required: true, message: 'La colonia es requerida' }]}
             >
               <Input style={{ width: '50%' }} placeholder="Colonia" />
             </Form.Item>
             <Form.Item
-              name={['address', 'cp']}
+              name={['shipping_address', 'zip_code']}
               noStyle
               rules={[{ required: true, message: 'El código postal es requerido' }]}
             >
@@ -152,4 +158,8 @@ const AddressForm = () => {
     </div>
   );
 };
-export default AddressForm;
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+export default connect(mapStateToProps, { addUser })(AddressForm);
