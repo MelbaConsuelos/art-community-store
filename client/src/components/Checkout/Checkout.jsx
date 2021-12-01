@@ -5,29 +5,37 @@ import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
 
 import {
-  Layout, Typography,
+  Layout, Typography, Card, Avatar, Image, Button,
 } from 'antd';
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import PageHeader from '../PageHeader/PageHeader';
 import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
 import AddressForm from './AddressForm/AddressForm';
 import StripeCheckout from './StrpCheckout';
-import { getCart } from '../../actions/cartActions';
+import { getCart, deleteFromCart, updateCart } from '../../actions/cartActions';
 
 import './Checkout.scss';
 
 const { Title, Text } = Typography;
-
+const { Meta } = Card;
 const { Content, Footer } = Layout;
 
 class Checkout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cart: getCart(),
+    };
+  }
+
   componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
-    this.props.getCart('12');
+    const cartItems = getCart();
+    this.setState({ cart: cartItems });
   }
 
   render() {
-    const onToken = (user, checkout) => (token) => checkout(user, token.id);
-    const { items } = this.props.cart.cart || [];
+    const { items } = this.state.cart.cart || [];
     const { shipping } = 0;
     return (
       <Layout>
@@ -47,14 +55,69 @@ class Checkout extends React.Component {
                 </div>
                 <div className="checkout-items">
                   {items && (items.map((item) => (
-                    <ShoppingCartItem item={item} user="12" />
+                    <Card
+                      style={{ width: 480 }}
+                      bodyStyle={{
+                        display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: 480,
+                      }}
+                      className="item-card"
+                    >
+                      <div className="item-product">
+                        <Meta
+                          avatar={<Avatar shape="square" size="large" src={<Image src={item.productImage} style={{ size: 64 }} />} />}
+                          title={item.name}
+                          description={`$${item.price}`}
+                        />
+                      </div>
+                      <div className="item-quantity">
+                        {item.quantity === 1 ? (
+                          <Button
+                            className="item-quantity-button"
+                            shape="circle"
+                            icon={<DeleteOutlined />}
+                            onClick={async () => {
+                              await this.props.deleteFromCart(item.productId);
+                              const cartItems = getCart();
+                              this.setState({ cart: cartItems });
+                            }}
+                          />
+                        ) : (
+                          <Button
+                            className="item-quantity-button"
+                            shape="circle"
+                            icon={<MinusOutlined />}
+                            onClick={async () => {
+                              // eslint-disable-next-line max-len
+                              await this.props.updateCart(item.productId, -1);
+                              const cartItems = getCart();
+                              this.setState({ cart: cartItems });
+                            }}
+                          />
+                        )}
+
+                        <div className="item-quantity-num">
+                          {item.quantity}
+                        </div>
+                        <Button
+                          className="item-quantity-button"
+                          shape="circle"
+                          icon={<PlusOutlined />}
+                          onClick={async () => {
+                            // eslint-disable-next-line max-len
+                            await this.props.updateCart(item.productId, 1);
+                            const cartItems = getCart();
+                            this.setState({ cart: cartItems });
+                          }}
+                        />
+                      </div>
+                    </Card>
                   )))}
                   <div className="checkout-bill">
                     <div className="checkout-bill-subtotal">
                       <Title className="checkout-bill-text" level={5}>Subtotal:</Title>
                       <Title level={5}>
                         $
-                        { this.props.cart.cart && this.props.cart.cart.bill}
+                        { this.state.cart.cart && this.state.cart.cart.bill}
                       </Title>
                     </div>
                     <div className="checkout-bill-shipping">
@@ -65,7 +128,7 @@ class Checkout extends React.Component {
                       <Title className="checkout-bill-text" level={4}>Total:</Title>
                       <Title level={4}>
                         $
-                        { this.props.cart.cart && this.props.cart.cart.bill + shipping}
+                        { this.state.cart.cart && this.state.cart.cart.bill + shipping}
                       </Title>
                     </div>
                   </div>
@@ -73,7 +136,7 @@ class Checkout extends React.Component {
                 <div className="checkout-stripe">
                   <StripeCheckout
                     user="12"
-                    amount={this.props.cart.cart && this.props.cart.cart.bill}
+                    amount={this.state.cart.cart && this.state.cart.cart.bill}
                     checkout={this.props.checkout}
                   />
                 </div>
@@ -91,4 +154,4 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 
-export default connect(mapStateToProps, { getCart })(Checkout);
+export default connect(mapStateToProps, { deleteFromCart, updateCart, getCart })(Checkout);

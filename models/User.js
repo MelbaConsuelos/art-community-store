@@ -9,8 +9,9 @@ const UserSchema = new Schema({
     shipping_address: {
         street: String,
         city: String,
-        state: String,
+        neighborhood: String,
         zip_code: String,
+        state: String,
     },
     client_name: {
         type: String,
@@ -25,9 +26,6 @@ const UserSchema = new Schema({
         lowercase: true,
         validate: [isEmail, 'Please enter a valid email']
     },
-    client_phone: {
-        type: Number,
-    },
 })
 
-module.exports = Order = mongoose.model('order',OrderSchema);
+module.exports = User = mongoose.model('user', UserSchema);

@@ -4,13 +4,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import {
-  Layout, Modal, Button, Typography,
+  ShoppingCartOutlined, MinusOutlined, PlusOutlined, DeleteOutlined,
+} from '@ant-design/icons';
+import {
+  Layout, Modal, Button, Typography, Card, Avatar, Image,
 } from 'antd';
-import { getCart } from '../../actions/cartActions';
+import { getCart, deleteFromCart, updateCart } from '../../actions/cartActions';
 import './PageHeader.scss';
 import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
+
+const { Meta } = Card;
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -19,22 +23,29 @@ class PageHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      cart: getCart(),
       isModalVisible: false,
     };
   }
 
   componentDidMount() {
-    this.props.getCart('12');
+    const cartItems = getCart();
+    this.setState({ cart: cartItems });
   }
 
   render() {
     const showModal = () => {
-      this.setState({ isModalVisible: true });
+      const cartItems = getCart();
+      this.setState({ isModalVisible: true, cart: cartItems });
     };
 
     const handleOk = () => {
       setTimeout(window.location.href = '/checkout', 0);
     };
+
+    // const handleUpdate() => {
+
+    // }
 
     const handleCancel = () => {
       this.setState({ isModalVisible: false });
@@ -58,24 +69,72 @@ class PageHeader extends React.Component {
           </div>
         </div>
         <Modal title="Carrito" visible={this.state.isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Proceder al Pago" cancelText="Cerrar">
-          {this.props.cart.cart && (this.props.cart.cart.items.map((item) => (
-            <ShoppingCartItem item={item} user="12" />
+          {this.state.cart && (this.state.cart.cart.items.map((item) => (
+            <Card
+              style={{ width: 480 }}
+              bodyStyle={{
+                display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: 480,
+              }}
+              className="item-card"
+            >
+              <div className="item-product">
+                <Meta
+                  avatar={<Avatar shape="square" size="large" src={<Image src={item.productImage} style={{ size: 64 }} />} />}
+                  title={item.name}
+                  description={`$${item.price}`}
+                />
+              </div>
+              <div className="item-quantity">
+                {item.quantity === 1 ? (
+                  <Button
+                    className="item-quantity-button"
+                    shape="circle"
+                    icon={<DeleteOutlined />}
+                    onClick={async () => {
+                      await this.props.deleteFromCart(item.productId);
+                      const cartItems = getCart();
+                      this.setState({ cart: cartItems });
+                    }}
+                  />
+                ) : (
+                  <Button
+                    className="item-quantity-button"
+                    shape="circle"
+                    icon={<MinusOutlined />}
+                    onClick={async () => {
+                      // eslint-disable-next-line max-len
+                      await this.props.updateCart(item.productId, -1);
+                      const cartItems = getCart();
+                      this.setState({ cart: cartItems });
+                    }}
+                  />
+                )}
+
+                <div className="item-quantity-num">
+                  {item.quantity}
+                </div>
+                <Button
+                  className="item-quantity-button"
+                  shape="circle"
+                  icon={<PlusOutlined />}
+                  onClick={async () => {
+                    // eslint-disable-next-line max-len
+                    await this.props.updateCart(item.productId, 1);
+                    const cartItems = getCart();
+                    this.setState({ cart: cartItems });
+                  }}
+                />
+              </div>
+            </Card>
           )))}
           <div className="shopCart-footer">
             <Title level={4}>Total:</Title>
             <Title level={5}>
               $
-              { this.props.cart.cart && this.props.cart.cart.bill}
+              {this.state.cart && this.state.cart.cart.bill}
             </Title>
           </div>
-          {/* <div className="shopCart-noItems">
-              <p> Parece que no has agregado nada aún :(</p>
-              <Button
-              className="headerButtons-signup"
-              type="primary" size="large" shape="round" href="/store">
-                Visitar la Tienda
-              </Button>
-            </div> */}
+          {console.log('modal', this.state)}
         </Modal>
       </Header>
     );
@@ -86,4 +145,4 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 
-export default connect(mapStateToProps, { getCart })(PageHeader);
+export default connect(mapStateToProps, { getCart, deleteFromCart, updateCart })(PageHeader);
