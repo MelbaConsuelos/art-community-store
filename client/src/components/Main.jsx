@@ -12,8 +12,8 @@ class Main extends React.Component {
     return (
       <div>
         <Switch>
-          <Route path="/home">
-            <Homepage />
+          <Route exact path="/">
+            <Store />
           </Route>
           <Route path="/login">
             <Login />

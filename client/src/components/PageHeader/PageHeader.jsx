@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-implied-eval */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
@@ -69,7 +70,7 @@ class PageHeader extends React.Component {
           </div>
         </div>
         <Modal title="Carrito" visible={this.state.isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Proceder al Pago" cancelText="Cerrar">
-          {this.state.cart && (this.state.cart.cart.items.map((item) => (
+          {(this.state.cart) && (this.state.cart.cart.items.map((item) => (
             <Card
               style={{ width: 480 }}
               bodyStyle={{

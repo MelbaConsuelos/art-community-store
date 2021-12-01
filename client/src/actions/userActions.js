@@ -15,7 +15,7 @@ export const getUser = (id) => (dispatch) => {
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const addUser = (shipping_address, client_name, client_lastname, client_email) => (dispatch) => {
+export const addUser = (userId, shipping_address, client_name, client_lastname, client_email) => (dispatch) => {
   // headers
   const config = {
     headers: {
@@ -24,14 +24,15 @@ export const addUser = (shipping_address, client_name, client_lastname, client_e
   };
   // request body
   const body = JSON.stringify({
-    shipping_address, client_name, client_lastname, client_email,
+    userId, shipping_address, client_name, client_lastname, client_email,
   });
   console.log(body);
   axios.post('/api/user', body, config)
-    .then((res) => dispatch({
+    .then((res) => ({
       type: ADD_USER,
       payload: res.data,
     }))
+    .then((res) => res.data)
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 

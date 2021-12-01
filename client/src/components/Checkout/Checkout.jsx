@@ -4,6 +4,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 
 import {
@@ -41,10 +42,17 @@ class Checkout extends React.Component {
   }
 
   render() {
+    // const history = useHistory();
     const { items } = this.state.cart.cart || [];
-    // const { userId } = this.state.user._id || '';
-    // const localShipping = 0;
-    // const nationalShipping = 40;
+    const handleUserUpdate = (newUser) => {
+      this.setState({ user: newUser });
+      console.log(this.state.user);
+    };
+
+    if (this.state.order && this.order.orders?.size > 0) {
+      return <Redirect to="/home" />;
+    }
+    console.log(this.state);
     return (
       <Layout>
         <PageHeader />
@@ -55,7 +63,7 @@ class Checkout extends React.Component {
                 <div className="checkout-title">
                   <Title level={3}>Dirección de Envío</Title>
                 </div>
-                <AddressForm />
+                <AddressForm handleUserUpdate={handleUserUpdate} />
               </div>
               <div className="checkout-cart">
                 <div className="checkout-title">
@@ -140,7 +148,8 @@ class Checkout extends React.Component {
 
                 <div className="checkout-stripe">
                   <StripeCheckout
-                    user={this.state.user?._id && this.state.user._id}
+                    user="61a78488a75b6b2d951059da"
+                    cart={this.state.cart}
                     amount={this.state.cart.cart && this.state.cart.cart.bill}
                     checkout={this.props.checkout}
                   />

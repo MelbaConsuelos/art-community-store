@@ -48,12 +48,18 @@ const states = ['Aguascalientes',
   'Yucatán',
   'Zacatecas'];
 
+const shortid = require('shortid');
+
 const AddressForm = (props) => {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
+  const newUserId = shortid.generate();
   const onFinish = async (values) => {
     console.log('Received values of form: ', values);
-    const user = props.addUser(values.shipping_address, values.client_name, values.client_lastname, values.client_email);
+    console.log(props);
+    const newUser = props.addUser(newUserId, values.shipping_address, values.client_name, values.client_lastname, values.client_email);
+    console.log(props);
+    props.handleUserUpdate(newUser);
     alert('Información de envío guardada exitosamente');
   };
 

@@ -11,8 +11,8 @@ import {
 export const getCart = () => {
   console.log(localStorage);
   const storageProducts = JSON.parse(localStorage.getItem('state'));
-  console.log(storageProducts.cart);
-  return storageProducts.cart;
+  console.log(storageProducts?.cart);
+  return storageProducts?.cart;
 };
 
 export const updateCart = (productId, qty) => (dispatch) => {

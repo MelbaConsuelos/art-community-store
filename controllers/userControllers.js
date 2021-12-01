@@ -11,8 +11,9 @@ module.exports.get_user = async (req,res) => {
 
 module.exports.create_user = async (req,res) => {
     try{
-        const { shipping_address, client_name, client_lastname, client_email } = req.body;
+        const { userId, shipping_address, client_name, client_lastname, client_email } = req.body;
         const newUser =  new User({
+            userId: userId,
             shipping_address: shipping_address,
             client_name: client_name,
             client_lastname: client_lastname,

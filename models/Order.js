@@ -17,8 +17,7 @@ const OrderSchema = new Schema({
         price: Number
     }],
     bill: {
-        type: Number,
-        required: true
+        type: String,
     },
     date_added: {
         type: Date,
@@ -35,8 +34,6 @@ const OrderSchema = new Schema({
     },
     client_email: {
         type: String,
-        required: [true,'Please enter an email'],
-        unique: true,
         lowercase: true,
         validate: [isEmail, 'Please enter a valid email']
     },
