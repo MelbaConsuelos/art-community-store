@@ -10,7 +10,7 @@ import {
 } from 'antd';
 
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deleteFromCart, addToCart, updateCart } from '../../../actions/cartActions';
+import { deleteFromCart, updateCart } from '../../../actions/cartActions';
 
 import './ShoppingCartItem.scss';
 
@@ -51,7 +51,7 @@ class ShoppingCartItem extends React.Component {
               icon={<MinusOutlined />}
               onClick={async () => {
                 // eslint-disable-next-line max-len
-                await this.props.updateCart(this.props.item.productId, this.props.item.quantity - 1);
+                await this.props.updateCart(this.props.item.productId, -1);
               }}
             />
           )}
@@ -65,7 +65,7 @@ class ShoppingCartItem extends React.Component {
             icon={<PlusOutlined />}
             onClick={async () => {
               // eslint-disable-next-line max-len
-              await this.props.updateCart(this.props.item.productId, this.props.item.quantity + 1);
+              await this.props.updateCart(this.props.item.productId, 1);
             }}
           />
         </div>
@@ -77,4 +77,4 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 // eslint-disable-next-line max-len
-export default connect(mapStateToProps, { addToCart, deleteFromCart, updateCart })(ShoppingCartItem);
+export default connect(mapStateToProps, { deleteFromCart, updateCart })(ShoppingCartItem);

@@ -22,9 +22,9 @@ class Store extends React.Component {
   }
 
   render() {
-    const onAddToCart = async (productId, product, quantity) => {
-      console.log('id: ', productId, 'product: ', product, 'q: ', quantity);
-      await this.props.addToCart(productId, product, quantity);
+    const onAddToCart = async (product, quantity) => {
+      console.log('store product', product, quantity);
+      await this.props.addToCart(product, quantity);
       alert('Item added to Cart');
     };
 

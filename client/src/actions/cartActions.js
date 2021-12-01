@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-multi-assign */
 /* eslint-disable max-len */
 /* eslint-disable no-use-before-define */
@@ -18,43 +19,41 @@ export const getCart = (id) => (dispatch) => {
 };
 
 export const updateCart = (productId, qty) => (dispatch) => {
-  console.log(productId, qty);
   const storageProducts = JSON.parse(localStorage.getItem('state'));
   const cartItem = storageProducts.cart.cart.items.findIndex((item) => item.productId === productId);
-  console.log(cartItem);
-  console.log(storageProducts.cart.cart.items);
-  console.log(storageProducts.cart.cart.items[cartItem]);
-  storageProducts.cart.cart.items[cartItem].quantity = qty;
+  if (qty > 0) {
+    storageProducts.cart.cart.bill += storageProducts.cart.cart.items[cartItem].price;
+  } else {
+    storageProducts.cart.cart.bill -= storageProducts.cart.cart.items[cartItem].price;
+  }
+  storageProducts.cart.cart.items[cartItem].quantity += qty;
   localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
-export const addToCart = (productId, product, quantity) => (dispatch) => {
-  console.log(productId, product, quantity);
+export const addToCart = (product, quantity) => (dispatch) => {
   const storageProducts = JSON.parse(localStorage.getItem('state'));
-  const existingProduct = storageProducts.cart.cart.items.filter((item) => item.productId === productId);
-  console.log(existingProduct);
+  const existingProduct = storageProducts.cart.cart.items.findIndex((item) => item.productId === product._id);
 
-  if (existingProduct.size > 0) {
+  if (existingProduct !== -1) {
     storageProducts.cart.cart.items[existingProduct].quantity += 1;
   } else {
-    storageProducts.cart.cart.items.push(productId);
+    // eslint-disable-next-line prefer-destructuring
+    const newProduct = {
+      productId: product._id, name: product.title, quantity, price: product.price, productImage: product.product_image,
+    };
+    storageProducts.cart.cart.items.push(newProduct);
   }
-  storageProducts.cart.cart.bill += productId.price;
+  storageProducts.cart.cart.bill += product.price;
   localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
 export const deleteFromCart = (productId) => (dispatch) => {
   const storageProducts = JSON.parse(localStorage.getItem('state'));
-  console.log(storageProducts);
   const cart = storageProducts.cart.cart.items.filter((item) => item.productId !== productId);
-  console.log(cart);
   const minus = storageProducts.cart.cart.items.filter((item) => item.productId === productId);
-  console.log(minus);
   const bill = storageProducts.cart.cart.bill -= minus[0].price;
-  console.log(bill);
   storageProducts.cart.cart.items = cart;
   storageProducts.cart.cart.bill = bill;
-  console.log(storageProducts);
   localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
