@@ -1,3 +1,5 @@
+/* eslint-disable no-multi-assign */
+/* eslint-disable max-len */
 /* eslint-disable no-use-before-define */
 import axios from 'axios';
 import { returnErrors } from './errorActions';
@@ -15,35 +17,45 @@ export const getCart = (id) => (dispatch) => {
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const updateCart = (userId, productId, qty) => (dispatch) => {
-  dispatch(setCartLoading());
-  axios.put(`/api/cart/${userId}`, { productId, qty })
-    .then((res) => dispatch({
-      type: GET_CART,
-      payload: res.data,
-    }))
-    .catch((err) => {
-      console.log('Error in update cart:', err);
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+export const updateCart = (productId, qty) => (dispatch) => {
+  console.log(productId, qty);
+  const storageProducts = JSON.parse(localStorage.getItem('state'));
+  const cartItem = storageProducts.cart.cart.items.findIndex((item) => item.productId === productId);
+  console.log(cartItem);
+  console.log(storageProducts.cart.cart.items);
+  console.log(storageProducts.cart.cart.items[cartItem]);
+  storageProducts.cart.cart.items[cartItem].quantity = qty;
+  localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
-export const addToCart = (id, productId, quantity, productImage) => (dispatch) => {
-  axios.post(`/api/cart/${id}`, { productId, quantity, productImage })
-    .then((res) => dispatch({
-      type: ADD_TO_CART,
-      payload: res.data,
-    }))
-    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+export const addToCart = (productId, product, quantity) => (dispatch) => {
+  console.log(productId, product, quantity);
+  const storageProducts = JSON.parse(localStorage.getItem('state'));
+  const existingProduct = storageProducts.cart.cart.items.filter((item) => item.productId === productId);
+  console.log(existingProduct);
+
+  if (existingProduct.size > 0) {
+    storageProducts.cart.cart.items[existingProduct].quantity += 1;
+  } else {
+    storageProducts.cart.cart.items.push(productId);
+  }
+  storageProducts.cart.cart.bill += productId.price;
+  localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
-export const deleteFromCart = (userId, itemId) => (dispatch) => {
-  axios.delete(`/api/cart/${userId}/${itemId}`)
-    .then((res) => dispatch({
-      type: DELETE_FROM_CART,
-      payload: res.data,
-    }))
-    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+export const deleteFromCart = (productId) => (dispatch) => {
+  const storageProducts = JSON.parse(localStorage.getItem('state'));
+  console.log(storageProducts);
+  const cart = storageProducts.cart.cart.items.filter((item) => item.productId !== productId);
+  console.log(cart);
+  const minus = storageProducts.cart.cart.items.filter((item) => item.productId === productId);
+  console.log(minus);
+  const bill = storageProducts.cart.cart.bill -= minus[0].price;
+  console.log(bill);
+  storageProducts.cart.cart.items = cart;
+  storageProducts.cart.cart.bill = bill;
+  console.log(storageProducts);
+  localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
 export const setCartLoading = () => ({

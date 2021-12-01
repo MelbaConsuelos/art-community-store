@@ -29,10 +29,11 @@ class ProductCard extends React.Component {
             size="large"
             shape="circle"
             icon={<ShoppingCartOutlined />}
-            onClick={this.props.onAddToCart.bind(this, '12', this.props.item._id)}
+            onClick={this.props.onAddToCart.bind(this.props.item._id, this.props.item, 1)}
           />,
         ]}
       >
+        {console.log(this.props.item)}
         <Meta
           title={this.props.item.title}
           description={this.props.item.description_long}

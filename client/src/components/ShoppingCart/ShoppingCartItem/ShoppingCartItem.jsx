@@ -10,7 +10,7 @@ import {
 } from 'antd';
 
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { deleteFromCart, updateCart } from '../../../actions/cartActions';
+import { deleteFromCart, addToCart, updateCart } from '../../../actions/cartActions';
 
 import './ShoppingCartItem.scss';
 
@@ -18,8 +18,8 @@ const { Meta } = Card;
 
 class ShoppingCartItem extends React.Component {
   render() {
+    const { cart } = this.props.cart;
     return (
-
       <Card
         style={{ width: 480 }}
         bodyStyle={{
@@ -41,7 +41,7 @@ class ShoppingCartItem extends React.Component {
               shape="circle"
               icon={<DeleteOutlined />}
               onClick={async () => {
-                await this.props.deleteFromCart(this.props.user, this.props.item.productId);
+                await this.props.deleteFromCart(this.props.item.productId);
               }}
             />
           ) : (
@@ -51,7 +51,7 @@ class ShoppingCartItem extends React.Component {
               icon={<MinusOutlined />}
               onClick={async () => {
                 // eslint-disable-next-line max-len
-                await this.props.updateCart(this.props.user, this.props.item.productId, this.props.item.quantity - 1);
+                await this.props.updateCart(this.props.item.productId, this.props.item.quantity - 1);
               }}
             />
           )}
@@ -65,7 +65,7 @@ class ShoppingCartItem extends React.Component {
             icon={<PlusOutlined />}
             onClick={async () => {
               // eslint-disable-next-line max-len
-              await this.props.updateCart(this.props.user, this.props.item.productId, this.props.item.quantity + 1);
+              await this.props.updateCart(this.props.item.productId, this.props.item.quantity + 1);
             }}
           />
         </div>
@@ -76,4 +76,5 @@ class ShoppingCartItem extends React.Component {
 const mapStateToProps = (state) => ({
   cart: state.cart,
 });
-export default connect(mapStateToProps, { deleteFromCart, updateCart })(ShoppingCartItem);
+// eslint-disable-next-line max-len
+export default connect(mapStateToProps, { addToCart, deleteFromCart, updateCart })(ShoppingCartItem);
