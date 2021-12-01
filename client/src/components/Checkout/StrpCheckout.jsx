@@ -11,12 +11,10 @@ const onToken = (user, cart, checkout) => (token) => checkout(user, cart, token.
 const Checkout = ({
   amount, user, cart, checkout, history,
 }) => (
+  // alert('Orden creada con éxito! Porfavor espera de 2-5 días hábiles para que te contactemos');
   <StripeCheckout
     amount={amount * 100}
-    token={async () => {
-      await onToken(user, cart, checkout);
-      alert('Orden creada con éxito! Porfavor espera de 2-5 días hábiles para que te contactemos');
-    }}
+    token={onToken(user, cart, checkout)}
     currency="MXN"
     stripeKey={STRIPE_PUBLISHABLE}
   />

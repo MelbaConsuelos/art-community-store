@@ -4,7 +4,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 
 import {
@@ -49,9 +48,6 @@ class Checkout extends React.Component {
       console.log(this.state.user);
     };
 
-    if (this.state.order && this.order.orders?.size > 0) {
-      return <Redirect to="/home" />;
-    }
     console.log(this.state);
     return (
       <Layout>
