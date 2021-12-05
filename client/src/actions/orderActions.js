@@ -19,7 +19,7 @@ export const checkout = (id, cart, source) => (dispatch) => {
       type: CHECKOUT,
       payload: res.data,
     }))
-    .then(alert('Orden creada con éxito! Porfavor espera de 2-5 días hábiles para que te contactemos'))
+    .then((res) => res)
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 

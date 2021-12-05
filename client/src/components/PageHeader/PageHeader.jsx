@@ -53,7 +53,7 @@ class PageHeader extends React.Component {
     };
     return (
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-        <a href="/home">
+        <a href="/">
           <div className="logo" />
         </a>
         <div className="headerButtons">

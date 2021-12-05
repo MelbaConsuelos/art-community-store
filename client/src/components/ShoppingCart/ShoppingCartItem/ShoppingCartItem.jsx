@@ -51,7 +51,7 @@ class ShoppingCartItem extends React.Component {
               icon={<MinusOutlined />}
               onClick={async () => {
                 // eslint-disable-next-line max-len
-                await this.props.updateCart(this.props.item.productId, -1);
+                await this.props.updateCart(this.props.item.productId, this.props.item.quantity - 1);
               }}
             />
           )}
@@ -65,7 +65,7 @@ class ShoppingCartItem extends React.Component {
             icon={<PlusOutlined />}
             onClick={async () => {
               // eslint-disable-next-line max-len
-              await this.props.updateCart(this.props.item.productId, 1);
+              await this.props.updateCart(this.props.item.productId, this.props.item.quantity + 1);
             }}
           />
         </div>

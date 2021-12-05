@@ -12,24 +12,23 @@ import {
 import {
   MinusOutlined, PlusOutlined, DeleteOutlined, ArrowRightOutlined,
 } from '@ant-design/icons';
-import PageHeader from '../PageHeader/PageHeader';
-import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
-import AddressForm from './AddressForm/AddressForm';
-import StripeCheckout from './StrpCheckout';
+import PageHeader from '../../PageHeader/PageHeader';
+import ShoppingCartItem from '../../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
+// import StripeCheckout from './StrpCheckout';
 import {
   getCart, deleteFromCart, updateCart,
-} from '../../actions/cartActions';
-import { getUser } from '../../actions/userActions';
-import { checkout } from '../../actions/orderActions';
+} from '../../../actions/cartActions';
+import { getUser } from '../../../actions/userActions';
+import { checkout } from '../../../actions/orderActions';
 
-import './Checkout.scss';
+import '../Checkout.scss';
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
 const { Content, Footer } = Layout;
 const shortid = require('shortid');
 
-class Checkout extends React.Component {
+class CheckoutPayment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,7 +65,6 @@ class Checkout extends React.Component {
                 <div className="checkout-title">
                   <Title level={3}>Dirección de Envío</Title>
                 </div>
-                <AddressForm handleUserUpdate={handleUserUpdate} />
               </div>
               <div className="checkout-cart">
                 <div className="checkout-title">
@@ -180,4 +178,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   deleteFromCart, updateCart, getCart, getUser, checkout,
-})(Checkout);
+})(CheckoutPayment);

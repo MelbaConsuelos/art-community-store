@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { getItems } from '../../actions/itemActions';
-import { addToCart } from '../../actions/cartActions';
+import { addToLocalCart } from '../../actions/cartActions';
 import PageHeader from '../PageHeader/PageHeader';
 import StoreHeader from './StoreHeader';
 import ProductCard from './ProductCard';
@@ -22,9 +22,9 @@ class Store extends React.Component {
   }
 
   render() {
-    const onAddToCart = async (product, quantity) => {
+    const onAddToLocalCart = async (product, quantity) => {
       console.log('store product', product, quantity);
-      await this.props.addToCart(product, quantity);
+      await this.props.addToLocalCart(product, quantity);
       alert('Item added to Cart');
     };
 
@@ -50,7 +50,7 @@ class Store extends React.Component {
                 dataSource={items}
                 renderItem={(item) => (
                   <List.Item>
-                    <ProductCard className="products-card" item={item} onAddToCart={onAddToCart} />
+                    <ProductCard className="products-card" item={item} onAddToLocalCart={onAddToLocalCart} />
                   </List.Item>
                 )}
               />
@@ -67,4 +67,4 @@ const mapStateToProps = (state) => ({
   item: state.item,
 });
 
-export default connect(mapStateToProps, { getItems, addToCart })(Store);
+export default connect(mapStateToProps, { getItems, addToLocalCart })(Store);

@@ -27,7 +27,7 @@ export const updateCart = (productId, qty) => (dispatch) => {
   localStorage.setItem('state', JSON.stringify(storageProducts));
 };
 
-export const addToCart = (product, quantity) => (dispatch) => {
+export const addToLocalCart = (product, quantity) => (dispatch) => {
   const storageProducts = JSON.parse(localStorage.getItem('state'));
   if (storageProducts.cart.cart === null) {
     const items = [];
@@ -53,6 +53,15 @@ export const addToCart = (product, quantity) => (dispatch) => {
     storageProducts.cart.cart.bill += product.price;
     localStorage.setItem('state', JSON.stringify(storageProducts));
   }
+};
+
+export const addCart = (cartId, items, bill) => (dispatch) => {
+  axios.post(`/api/cart/${cartId}`, { items, bill })
+    .then((res) => dispatch({
+      type: ADD_TO_CART,
+      payload: res.data,
+    }))
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
 export const deleteFromCart = (productId) => (dispatch) => {

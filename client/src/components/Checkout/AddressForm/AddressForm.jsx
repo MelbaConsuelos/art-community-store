@@ -20,6 +20,7 @@ const states = ['Aguascalientes',
   'Baja California Sur',
   'Campeche',
   'Chiapas',
+  'Chihuahua',
   'Coahuila de Zaragoza',
   'Ciudad de México',
   'Coahuila',
@@ -56,7 +57,6 @@ const AddressForm = (props) => {
   const newUserId = shortid.generate();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
-    console.log(props);
     const newUser = {
       userId: newUserId,
       shipping_address: values.shipping_address,
@@ -66,7 +66,6 @@ const AddressForm = (props) => {
     };
     props.addUser(newUser);
     props.handleUserUpdate(newUser);
-    console.log(newUser);
     alert('Información de envío guardada exitosamente');
   };
 
