@@ -19,6 +19,7 @@ module.exports.create_user = async (req,res) => {
             client_lastname: client_lastname,
             client_email: client_email
         });
+        newUser.save().then(user => res.json(user));
         return res.status(201).send(newUser);
     }
     catch(err){

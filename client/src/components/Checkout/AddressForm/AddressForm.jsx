@@ -54,12 +54,19 @@ const AddressForm = (props) => {
   const [form] = Form.useForm();
   const [, forceUpdate] = useState({});
   const newUserId = shortid.generate();
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     console.log('Received values of form: ', values);
     console.log(props);
-    const newUser = props.addUser(newUserId, values.shipping_address, values.client_name, values.client_lastname, values.client_email);
-    console.log(props);
+    const newUser = {
+      userId: newUserId,
+      shipping_address: values.shipping_address,
+      client_name: values.client_name,
+      client_lastname: values.client_lastname,
+      client_email: values.client_email,
+    };
+    props.addUser(newUser);
     props.handleUserUpdate(newUser);
+    console.log(newUser);
     alert('Información de envío guardada exitosamente');
   };
 
