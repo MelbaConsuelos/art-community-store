@@ -53,7 +53,6 @@ class Checkout extends React.Component {
     };
 
     const handleCreateCart = () => {
-      console.log('QWERQEWRQWERQWER', this.state);
       this.props.addCart(this.state.user.userId,
         this.state.cart.cart.items,
         this.state.cart.cart.bill);
@@ -129,7 +128,6 @@ class Checkout extends React.Component {
                             this.props.updateCart(item.productId, 1);
                             const cartItems = getLocalCart();
                             this.setState({ cart: cartItems });
-                            console.log(this.state);
                           }}
                         />
                       </div>

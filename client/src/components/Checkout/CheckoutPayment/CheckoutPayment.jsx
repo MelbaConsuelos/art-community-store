@@ -14,7 +14,6 @@ import {
   CheckCircleOutlined, ArrowRightOutlined, CaretRightOutlined,
 } from '@ant-design/icons';
 import PageHeader from '../../PageHeader/PageHeader';
-import ShoppingCartItem from '../../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
 import StripeCheckout from '../StrpCheckout';
 import {
   getLocalCart, deleteFromCart, updateCart,
@@ -42,9 +41,7 @@ class CheckoutPayment extends React.Component {
     const cartItems = getLocalCart();
     const user = (window.location.pathname).split('/');
     const userId = user[2];
-    console.log(userId);
     const currUser = this.props.getUser(userId);
-    console.log(currUser);
     this.setState({ user: currUser, cart: cartItems });
   }
 
@@ -88,13 +85,16 @@ class CheckoutPayment extends React.Component {
                       <br />
                       {this.props.order?.orders[0].items && (
                         this.props.order?.orders[0].items.map((item) => (
-                          <Text>
-                            {item.name}
-                            {' '}
-                            x
-                            {' '}
-                            {item.quantity}
-                          </Text>
+                          <>
+                            <Text>
+                              {item.name}
+                              {' '}
+                              x
+                              {' '}
+                              {item.quantity}
+                            </Text>
+                            <br />
+                          </>
                         )))}
                     </div>
                     <br />
@@ -114,7 +114,6 @@ class CheckoutPayment extends React.Component {
                   <div className="checkout-cart">
                     <div className="checkout-title">
                       <Title level={3}>Resumen de Productos:</Title>
-                      {console.log(this.state)}
                     </div>
                     <div className="checkout-items">
                       {items && (items.map((item) => (
@@ -156,7 +155,6 @@ class CheckoutPayment extends React.Component {
                         </div>
                       </div>
                     </div>
-                    {console.log(this.state.cart.cart)}
                     {this.state.user?.userId && (
                     <Button
                       icon={<ArrowRightOutlined />}

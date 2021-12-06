@@ -33,7 +33,6 @@ class ProductCard extends React.Component {
           />,
         ]}
       >
-        {console.log(this.props.item)}
         <Meta
           title={this.props.item.title}
           description={this.props.item.description_long}

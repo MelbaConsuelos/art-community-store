@@ -13,7 +13,6 @@ import {
 } from 'antd';
 import { getLocalCart, deleteFromCart, updateCart } from '../../actions/cartActions';
 import './PageHeader.scss';
-import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
 
 const { Meta } = Card;
 
@@ -59,14 +58,6 @@ class PageHeader extends React.Component {
         <div className="headerButtons">
           <div>
             <Button className="headerButtons-shoppingCart" type="primary" size="large" shape="circle" icon={<ShoppingCartOutlined />} onClick={showModal} />
-          </div>
-          <div>
-            <Button className="headerButtons-login" size="large" shape="round" href="/login">Ingresar</Button>
-          </div>
-          <div>
-            <Button className="headerButtons-signup" type="primary" size="large" shape="round" href="/signup">
-              Crear Cuenta
-            </Button>
           </div>
         </div>
         <Modal title="Carrito" visible={this.state.isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Proceder al Pago" cancelText="Cerrar">
@@ -135,7 +126,6 @@ class PageHeader extends React.Component {
               {this.state.cart && this.state.cart.cart.bill}
             </Title>
           </div>
-          {console.log('modal', this.state)}
         </Modal>
       </Header>
     );
