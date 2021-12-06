@@ -17,7 +17,7 @@ import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem'
 import AddressForm from './AddressForm/AddressForm';
 import StripeCheckout from './StrpCheckout';
 import {
-  getCart, deleteFromCart, updateCart,
+  getLocalCart, deleteFromCart, updateCart, addCart,
 } from '../../actions/cartActions';
 import { getUser } from '../../actions/userActions';
 import { checkout } from '../../actions/orderActions';
@@ -27,20 +27,19 @@ import './Checkout.scss';
 const { Title, Text } = Typography;
 const { Meta } = Card;
 const { Content, Footer } = Layout;
-const shortid = require('shortid');
 
 class Checkout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: getCart(),
+      cart: getLocalCart(),
       user: getUser(),
     };
   }
 
   componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
-    const cartItems = getCart();
+    const cartItems = getLocalCart();
     const currUser = getUser();
     this.setState({ user: currUser, cart: cartItems });
   }
@@ -48,14 +47,17 @@ class Checkout extends React.Component {
   render() {
     // const history = useHistory();
     const { items } = this.state.cart.cart || [];
+
     const handleUserUpdate = (newUser) => {
       this.setState({ user: newUser });
-      console.log(this.state.user);
     };
 
-    const newCartId = shortid.generate();
+    const handleCreateCart = () => {
+      this.props.addCart(this.state.user.userId,
+        this.state.cart.cart.items,
+        this.state.cart.cart.bill);
+    };
 
-    console.log(this.state);
     return (
       <Layout>
         <PageHeader />
@@ -94,9 +96,9 @@ class Checkout extends React.Component {
                             className="item-quantity-button"
                             shape="circle"
                             icon={<DeleteOutlined />}
-                            onClick={async () => {
-                              await this.props.deleteFromCart(item.productId);
-                              const cartItems = getCart();
+                            onClick={() => {
+                              this.props.deleteFromCart(item.productId);
+                              const cartItems = getLocalCart();
                               this.setState({ cart: cartItems });
                             }}
                           />
@@ -105,10 +107,10 @@ class Checkout extends React.Component {
                             className="item-quantity-button"
                             shape="circle"
                             icon={<MinusOutlined />}
-                            onClick={async () => {
+                            onClick={() => {
                               // eslint-disable-next-line max-len
-                              await this.props.updateCart(item.productId, -1);
-                              const cartItems = getCart();
+                              this.props.updateCart(item.productId, -1);
+                              const cartItems = getLocalCart();
                               this.setState({ cart: cartItems });
                             }}
                           />
@@ -121,11 +123,12 @@ class Checkout extends React.Component {
                           className="item-quantity-button"
                           shape="circle"
                           icon={<PlusOutlined />}
-                          onClick={async () => {
+                          onClick={() => {
                             // eslint-disable-next-line max-len
-                            await this.props.updateCart(item.productId, 1);
-                            const cartItems = getCart();
+                            this.props.updateCart(item.productId, 1);
+                            const cartItems = getLocalCart();
                             this.setState({ cart: cartItems });
+                            console.log(this.state);
                           }}
                         />
                       </div>
@@ -148,21 +151,16 @@ class Checkout extends React.Component {
                     </div>
                   </div>
                 </div>
-                {console.log(this.state.cart.cart)}
                 {this.state.user?.userId && (
                 <Button
                   icon={<ArrowRightOutlined />}
                   size="large"
-                  href="/checkout-payment"
-                  onClick={async () => {
-                    await this.props.addToCart(newCartId,
-                      this.state.cart.cart);
-                  }}
+                  href={`/checkout-payment/${this.state.user.userId}`}
+                  onClick={handleCreateCart}
                 >
                   Continuar al pago
                 </Button>
                 )}
-
               </div>
             </div>
           </div>
@@ -179,5 +177,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  deleteFromCart, updateCart, getCart, getUser, checkout,
+  deleteFromCart, updateCart, getLocalCart, addCart, getUser, checkout,
 })(Checkout);

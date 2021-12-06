@@ -11,19 +11,19 @@ module.exports.get_orders = async (req,res) => {
 
 module.exports.checkout = async (req,res) => {
     try{
-        const userId = "61a7eecd51cdc5559acb5fab";
-        const source = "123";
-        let cart = req.body;
+        const userId = req.params.id;
+        const source = req.body;
+        let cart = await Cart.findOne({userId});
         let user = await User.findOne({_id: userId});
-        const email = "A01410921@itesm.mx";
+        const email = user.email;
         if(cart){
-            // const charge = await stripe.charges.create({
-            //     amount: cart.bill,
-            //     currency: 'mxn',
-            //     source: source,
-            //     receipt_email: email
-            // })
-            // if(!charge) throw Error('Payment failed');
+            const charge = await stripe.charges.create({
+                amount: cart.bill,
+                currency: 'mxn',
+                source: source,
+                receipt_email: email
+            })
+            if(!charge) throw Error('Payment failed');
             
             const order = await Order.create({
                 userId,

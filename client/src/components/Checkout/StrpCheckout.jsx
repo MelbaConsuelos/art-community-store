@@ -9,12 +9,12 @@ const STRIPE_PUBLISHABLE = 'pk_test_wk6O7Cc5k3McBIG2Hut2irGs';
 const onToken = (user, cart, checkout) => (token) => checkout(user, cart, token.id);
 
 const Checkout = ({
-  amount, user, cart, checkout, history,
+  amount, user, checkout,
 }) => (
   // alert('Orden creada con éxito! Porfavor espera de 2-5 días hábiles para que te contactemos');
   <StripeCheckout
     amount={amount * 100}
-    token={onToken(user, cart, checkout)}
+    token={onToken(user, checkout)}
     currency="MXN"
     stripeKey={STRIPE_PUBLISHABLE}
   />

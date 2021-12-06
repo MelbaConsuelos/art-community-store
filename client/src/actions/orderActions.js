@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-use-before-define */
 import axios from 'axios';
 import { returnErrors } from './errorActions';
@@ -14,7 +15,8 @@ export const getOrders = (id) => (dispatch) => {
 };
 
 export const checkout = (id, cart, source) => (dispatch) => {
-  axios.post(`/api/order/${id}`, cart, { source })
+  const userId = id[0].userId;
+  axios.post(`/api/order/${userId}`, cart, { source })
     .then((res) => dispatch({
       type: CHECKOUT,
       payload: res.data,

@@ -6,6 +6,7 @@ const stripe = require('stripe')(config.get('StripeAPIKey'));
 
 module.exports.get_user = async (req,res) => {
     const userId = req.params.id;
+    console.log(userId);
     User.find({userId}).then(user=> res.json(user));
 }
 

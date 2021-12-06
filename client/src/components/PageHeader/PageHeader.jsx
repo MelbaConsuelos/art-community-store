@@ -11,7 +11,7 @@ import {
 import {
   Layout, Modal, Button, Typography, Card, Avatar, Image,
 } from 'antd';
-import { getCart, deleteFromCart, updateCart } from '../../actions/cartActions';
+import { getLocalCart, deleteFromCart, updateCart } from '../../actions/cartActions';
 import './PageHeader.scss';
 import ShoppingCartItem from '../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
 
@@ -24,19 +24,19 @@ class PageHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: getCart(),
+      cart: getLocalCart(),
       isModalVisible: false,
     };
   }
 
   componentDidMount() {
-    const cartItems = getCart();
+    const cartItems = getLocalCart();
     this.setState({ cart: cartItems });
   }
 
   render() {
     const showModal = () => {
-      const cartItems = getCart();
+      const cartItems = getLocalCart();
       this.setState({ isModalVisible: true, cart: cartItems });
     };
 
@@ -93,7 +93,7 @@ class PageHeader extends React.Component {
                     icon={<DeleteOutlined />}
                     onClick={async () => {
                       await this.props.deleteFromCart(item.productId);
-                      const cartItems = getCart();
+                      const cartItems = getLocalCart();
                       this.setState({ cart: cartItems });
                     }}
                   />
@@ -105,7 +105,7 @@ class PageHeader extends React.Component {
                     onClick={async () => {
                       // eslint-disable-next-line max-len
                       await this.props.updateCart(item.productId, -1);
-                      const cartItems = getCart();
+                      const cartItems = getLocalCart();
                       this.setState({ cart: cartItems });
                     }}
                   />
@@ -121,7 +121,7 @@ class PageHeader extends React.Component {
                   onClick={async () => {
                     // eslint-disable-next-line max-len
                     await this.props.updateCart(item.productId, 1);
-                    const cartItems = getCart();
+                    const cartItems = getLocalCart();
                     this.setState({ cart: cartItems });
                   }}
                 />
@@ -146,4 +146,4 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 
-export default connect(mapStateToProps, { getCart, deleteFromCart, updateCart })(PageHeader);
+export default connect(mapStateToProps, { getLocalCart, deleteFromCart, updateCart })(PageHeader);

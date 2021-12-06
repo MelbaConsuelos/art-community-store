@@ -8,8 +8,17 @@ import {
   GET_CART, ADD_TO_CART, DELETE_FROM_CART, CART_LOADING,
 } from './types';
 
-export const getCart = () => {
-  console.log(localStorage);
+export const getCart = (id) => (dispatch) => {
+  dispatch(setCartLoading());
+  axios.get(`/api/cart/${id}`)
+    .then((res) => dispatch({
+      type: GET_CART,
+      payload: res.data,
+    }))
+    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+};
+
+export const getLocalCart = () => {
   const storageProducts = JSON.parse(localStorage.getItem('state'));
   console.log(storageProducts?.cart);
   return storageProducts?.cart;
@@ -55,8 +64,8 @@ export const addToLocalCart = (product, quantity) => (dispatch) => {
   }
 };
 
-export const addCart = (cartId, items, bill) => (dispatch) => {
-  axios.post(`/api/cart/${cartId}`, { items, bill })
+export const addCart = (userId, items, bill) => (dispatch) => {
+  axios.post(`/api/cart/${userId}`, { items, bill })
     .then((res) => dispatch({
       type: ADD_TO_CART,
       payload: res.data,

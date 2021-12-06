@@ -14,9 +14,9 @@ import {
 } from '@ant-design/icons';
 import PageHeader from '../../PageHeader/PageHeader';
 import ShoppingCartItem from '../../ShoppingCart/ShoppingCartItem/ShoppingCartItem';
-// import StripeCheckout from './StrpCheckout';
+import StripeCheckout from '../StrpCheckout';
 import {
-  getCart, deleteFromCart, updateCart,
+  getLocalCart, deleteFromCart, updateCart,
 } from '../../../actions/cartActions';
 import { getUser } from '../../../actions/userActions';
 import { checkout } from '../../../actions/orderActions';
@@ -32,43 +32,41 @@ class CheckoutPayment extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cart: getCart(),
-      user: getUser(),
+      cart: getLocalCart(),
     };
   }
 
   componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
-    const cartItems = getCart();
-    const currUser = getUser();
+    const cartItems = getLocalCart();
+    const user = (window.location.pathname).split('/');
+    const userId = user[2];
+    console.log(userId);
+    const currUser = this.props.getUser(userId);
+    console.log(currUser);
     this.setState({ user: currUser, cart: cartItems });
   }
 
   render() {
     // const history = useHistory();
     const { items } = this.state.cart.cart || [];
-    const handleUserUpdate = (newUser) => {
-      this.setState({ user: newUser });
-      console.log(this.state.user);
-    };
-
-    const newCartId = shortid.generate();
+    const cartItems = getLocalCart();
+    const user = (window.location.pathname).split('/');
+    const userId = user[2];
 
     console.log(this.state);
+    const newCartId = shortid.generate();
+
     return (
       <Layout>
         <PageHeader />
         <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             <div className="checkout-content">
-              <div className="checkout-address">
-                <div className="checkout-title">
-                  <Title level={3}>Dirección de Envío</Title>
-                </div>
-              </div>
               <div className="checkout-cart">
                 <div className="checkout-title">
-                  <Title level={3}>Productos</Title>
+                  <Title level={3}>Resumen de Productos:</Title>
+                  {console.log(this.state)}
                 </div>
                 <div className="checkout-items">
                   {items && (items.map((item) => (
@@ -87,45 +85,9 @@ class CheckoutPayment extends React.Component {
                         />
                       </div>
                       <div className="item-quantity">
-                        {item.quantity === 1 ? (
-                          <Button
-                            className="item-quantity-button"
-                            shape="circle"
-                            icon={<DeleteOutlined />}
-                            onClick={async () => {
-                              await this.props.deleteFromCart(item.productId);
-                              const cartItems = getCart();
-                              this.setState({ cart: cartItems });
-                            }}
-                          />
-                        ) : (
-                          <Button
-                            className="item-quantity-button"
-                            shape="circle"
-                            icon={<MinusOutlined />}
-                            onClick={async () => {
-                              // eslint-disable-next-line max-len
-                              await this.props.updateCart(item.productId, -1);
-                              const cartItems = getCart();
-                              this.setState({ cart: cartItems });
-                            }}
-                          />
-                        )}
-
                         <div className="item-quantity-num">
                           {item.quantity}
                         </div>
-                        <Button
-                          className="item-quantity-button"
-                          shape="circle"
-                          icon={<PlusOutlined />}
-                          onClick={async () => {
-                            // eslint-disable-next-line max-len
-                            await this.props.updateCart(item.productId, 1);
-                            const cartItems = getCart();
-                            this.setState({ cart: cartItems });
-                          }}
-                        />
                       </div>
                     </Card>
                   )))}
@@ -162,6 +124,18 @@ class CheckoutPayment extends React.Component {
                 )}
 
               </div>
+              <div className="checkout-payment">
+                <div className="checkout-title">
+                  <Title level={3}>Pago con Stripe</Title>
+                </div>
+                <div className="checkout-stripe">
+                  <StripeCheckout
+                    user={userId}
+                    amount={this.state.cart.cart && this.state.cart.cart.bill}
+                    checkout={this.props.checkout}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </Content>
@@ -177,5 +151,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  deleteFromCart, updateCart, getCart, getUser, checkout,
+  deleteFromCart, updateCart, getLocalCart, getUser, checkout,
 })(CheckoutPayment);
