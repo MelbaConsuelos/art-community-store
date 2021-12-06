@@ -14,9 +14,10 @@ export const getOrders = (id) => (dispatch) => {
     .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
 };
 
-export const checkout = (id, cart, source) => (dispatch) => {
-  const userId = id[0].userId;
-  axios.post(`/api/order/${userId}`, cart, { source })
+export const checkout = (id, source) => (dispatch) => {
+  const userId = id;
+  console.log(source);
+  axios.post(`/api/order/${userId}`, { source })
     .then((res) => dispatch({
       type: CHECKOUT,
       payload: res.data,

@@ -12,13 +12,14 @@ module.exports.get_orders = async (req,res) => {
 module.exports.checkout = async (req,res) => {
     try{
         const userId = req.params.id;
-        const source = req.body;
+        const { source } = req.body;
         let cart = await Cart.findOne({userId});
-        let user = await User.findOne({_id: userId});
-        const email = user.email;
+        let user = await User.findOne({userId});
+        console.log('User', user);
+        const email = user.client_email;
         if(cart){
             const charge = await stripe.charges.create({
-                amount: cart.bill,
+                amount: cart.bill * 100,
                 currency: 'mxn',
                 source: source,
                 receipt_email: email
